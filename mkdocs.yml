@@ -3,22 +3,33 @@ site_url: https://zju-os-sld.pages.zjusct.io/os-25fall
 site_dir: public # 设置 site_dir 配合 gitlab CI
 repo_url: https://git.zju.edu.cn/zju-os-sld/os-25fall
 repo_name: zju-os-sld/os-25fall
-theme:
+
+theme: 
   name: material
-  features:
-    - navigation.expand
-    - navigation.top
+  icon:
+    repo: fontawesome/brands/github
+    edit: material/pencil
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default
       toggle:
-        icon: material/toggle-switch-off-outline
+        icon: material/brightness-7
         name: Switch to dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
       toggle:
-        icon: material/toggle-switch
+        icon: material/brightness-4
         name: Switch to light mode
+  features:
+    - content.code.copy
+    - content.code.annotate
+    - content.action.edit
+    - navigation.top
+    - navigation.footer
+    - navigation.tracking
+  font:
+    code: Cascadia
+
 nav: 
   - 实验指导零: lab0.md
   - 实验指导一: lab1.md
@@ -28,14 +39,50 @@ nav:
   - 实验指导五: lab5.md
   - 实验指导六: lab6.md
   - 常见问题及解答: faq.md
+
+
 markdown_extensions:
+  - toc:
+      permalink: true
+      toc_depth: 4
+  - meta
+  - def_list
   - attr_list
+  - md_in_html
+  - sane_lists
+  - admonition
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.tilde
+  - pymdownx.critic
+  - pymdownx.details
+  - pymdownx.snippets
+  - pymdownx.magiclink
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.tabbed:
+      alternate_style: true
   - pymdownx.tasklist:
       custom_checkbox: true
-      clickable_checkbox: true
   - pymdownx.highlight:
-      linenums: true
-  - pymdownx.superfences
-  - pymdownx.emoji:
-      emoji_index: !!python/name:materialx.emoji.twemoji
-      emoji_generator: !!python/name:materialx.emoji.to_svg
+      anchor_linenums: true
+  - pymdownx.arithmatex:
+      generic: true
+
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+extra_css:
+  - https://fonts.googleapis.com/css?family=Roboto:500,500i,600,600i&display=fallback
+  - stylesheets/extra.css
+
+plugins:
+  - search
+    #- heti:
+    # disable_serve: false
