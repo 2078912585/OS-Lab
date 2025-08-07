@@ -834,9 +834,9 @@ make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- <path/to/file(no suffix)>.i
 
 验收环节将从以下问题中随机挑选几个作为考核标准：
 
-1. 在开启 trap 处理处展示 stvec 的值，并在 CSR 初始化后查看 SIE 与 SSATTUS 的值是否被正确设置。
+1. 在开启 trap 处理处展示 `stvec` 的值，并在 CSR 初始化后查看 `SIE` 与 `SSATTUS` 的值是否被正确设置。
 2. 分别展示上下文切换前后各个寄存器的值（上下文）是否被正确 store 和 load，需要展示寄存器的值以及栈中对应地址保存的值。
 3. 在 ecall 前后展示受影响的寄存器的值的变化。
 4. 尝试在内联汇编部分添加/不添加（与你的实现相反）第四部分，重复3，展示区别。
 5. 使用 debug 工具展示整个 OS 项目中函数的跳转过程。
-6. 使用 gdb 追踪查看 rdtime 的值以及 time 的变化。
+6. 使用 gdb 追踪查看 `rdtime` 的值以及 `time` 的变化。
