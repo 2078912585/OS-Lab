@@ -1,6 +1,6 @@
 # 浙江大学25年操作系统实验
 
-本[仓库](https://git.zju.edu.cn/zju-os-sld/os-25fall)是浙江大学25年秋**操作系统**课程的教学仓库，包含所有实验文档和公开代码。目录结构
+本[仓库](https://git.zju.edu.cn/zju-os-sld/os-25fall)是浙江大学25年秋**操作系统**课程的教学仓库，包含所有实验文档和公开代码。实验文档已经部署在了[zju-git pages](https://zju-os-sld.pages.zjusct.io/os-25fall)上，方便大家阅读。
 
 <!-- ```bash
 ├── README.md
@@ -9,7 +9,6 @@
 └── src/        # 公开代码
 ``` -->
 
-实验文档已经部署在了[zju-git pages](https://zju-os-sld.pages.zjusct.io/os-25fall)上，方便大家阅读。
 
 
 ## 实验任务与要求
