@@ -39,8 +39,8 @@ nav:
   # - 实验指导五: lab5.md
   # - 实验指导六: lab6.md
   - 常见问题及解答: faq.md
-  - spike工具链使用: spike.md
-  - docker使用: docker.md
+  - 附录A:spike使用: spike.md
+  - 附录B:docker使用: docker.md
   # - AIGC使用: aigc.md
 
 
