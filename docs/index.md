@@ -30,4 +30,4 @@ INFO     -  [11:45:14] Serving on http://127.0.0.1:8000/os-25fall
 
 感谢以下各位老师和助教的辛勤付出！
 
-[申文博](https://wenboshen.org/)、[周亚金](https://yajin.org/)、徐金焱、周侠、管章辉、张文龙、刘强、孙家栋、周天昱、庄阿得、王琨、沈韬立、王星宇、朱璟森、谢洵、[潘子曰](https://pan-ziyue.github.io/)、朱若凡、季高强、郭若容、杜云潇、吴逸飞、李程浩、朱家迅、王行楷、陈淦豪、赵紫宸、[王鹤翔](https://tonycrane.cc)、许昊瑞。
+[申文博](https://wenboshen.org/)、[周亚金](https://yajin.org/)、徐金焱、周侠、管章辉、张文龙、刘强、孙家栋、周天昱、庄阿得、王琨、沈韬立、王星宇、朱璟森、谢洵、[潘子曰](https://pan-ziyue.github.io/)、朱若凡、季高强、郭若容、杜云潇、吴逸飞、李程浩、朱家迅、王行楷、陈淦豪、赵紫宸、[王鹤翔](https://tonycrane.cc)、许昊瑞、[朱宝林](https://github.com/bowling233)、[张恒斌](https://github.com/hharryz)。
