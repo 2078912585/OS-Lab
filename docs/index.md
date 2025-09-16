@@ -50,3 +50,7 @@ INFO     -  [11:45:14] Serving on http://127.0.0.1:8000/os-25fall
 [季江明、王海帅班课程实验 (TA:朱宝林、张恒斌)](https://zju-os.github.io/doc/)
 
 [NJU蒋炎炎OS实验](https://jyywiki.cn/OS/2025/)
+
+[助教私藏的OS2024全套实验(别跟老师讲)](https://github.com/JuniorSNy/zju-os-sld)
+
+[助教私藏的OS2023全套实验](https://github.com/JuniorSNy/os24fall-stu-full)
