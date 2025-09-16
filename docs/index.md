@@ -1,10 +1,8 @@
 # 浙江大学25年操作系统实验
 
-本[仓库](https://git.zju.edu.cn/zju-os-sld/os-25fall)是浙江大学25年秋**操作系统**课程的教学仓库
+本[仓库](https://git.zju.edu.cn/zju-os-sld/os-25fall)是浙江大学25年秋**操作系统**课程的教学仓库，包含所有实验文档和公开代码。目录结构
 
-<!-- 包含所有实验文档和公开代码。目录结构：
-
-```bash
+<!-- ```bash
 ├── README.md
 ├── docs/       # 实验文档   
 ├── mkdocs.yml
@@ -53,8 +51,8 @@ INFO     -  [11:45:14] Serving on http://127.0.0.1:8000/os-25fall
 
 [NJU蒋炎炎OS实验](https://jyywiki.cn/OS/2025/)
 
-(下面这俩有兴趣的自己做就好了，别跟老师提这玩意)
+往年实验仓库，有兴趣的可以提前推进度，~~别跟老师提~~
 
-[助教私藏的OS2024全套实验](https://github.com/JuniorSNy/zju-os-sld)
+[私藏的OS2024全套实验](https://github.com/JuniorSNy/zju-os-sld)
 
-[助教私藏的OS2023全套实验](https://github.com/JuniorSNy/os24fall-stu-full)
+[私藏的OS2023全套实验](https://github.com/JuniorSNy/os24fall-stu-full)
