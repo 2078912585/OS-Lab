@@ -36,4 +36,6 @@ INFO     -  [11:45:14] Serving on http://127.0.0.1:8000/os-25fall
 
 ## 最优质的链接
 
-##### [季江明、王海帅班 (TA:朱宝林、张恒斌)](https://zju-os.github.io/doc/)
+[季江明、王海帅班课程实验 (TA:朱宝林、张恒斌)](https://zju-os.github.io/doc/)
+
+[NJU蒋炎炎OS实验](https://jyywiki.cn/OS/2025/)
