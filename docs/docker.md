@@ -9,3 +9,29 @@
 ## 如何使用Docker部署实验
 
 <!-- 在安装完 docker 后，可以使用 docker 官方提供的 -->
+
+容器镜像 `git.zju.edu.cn:5050/os/tool`，内含：
+
+- 全套实验所需工具链：QEMU、RISC-V 交叉编译工具链、OpenSBI、Spike 等
+- `/zju-os/linux-source-*`：Linux 源码
+- `/zju-os/src`：挂载的实验 `src` 目录
+
+进入 `src` 目录：
+
+- 拉起容器：
+
+    ```bash
+    docker compose up -d
+    ```
+
+- 打开终端：
+
+    ```bash
+    docker exec -it zju-os-sld /usr/bin/fish
+    ```
+
+- 关闭并删除容器：
+
+    ```bash
+    docker compose down
+    ```
