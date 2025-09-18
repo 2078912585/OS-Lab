@@ -1,5 +1,9 @@
 # Lab 1: RV64 内核引导与时钟中断处理
 
+!!! tip "DDL"
+
+    目前暂未定DDL，参考往年的DDL是国庆后的第三周周末 23:59（秋6～秋7），宁早勿迟
+
 ## 实验目的
 * 学习 RISC-V 汇编，编写 head.S 实现跳转到内核运行的第一个 C 函数；
 * 学习 OpenSBI，理解 OpenSBI 在实验中所起到的作用，并调用 OpenSBI 提供的接口完成字符的输出；
@@ -443,7 +447,7 @@ trap 处理程序根据 `scause` 的值，进入不同的处理逻辑，在本�
 
 ### 准备工程
 
-从 [repo](https://github.com/ZJU-SEC/os24fall-stu) 同步实验代码框架。为了减少大家的工作量，在这里我们提供了系统二助教 [45gfg9](https://github.com/45gfg9) 编写的 `printk` 来输出格式化字符串。
+从 [repo](https://git.zju.edu.cn/zju-os-sld/os-25fall) 同步实验代码框架。为了减少大家的工作量，在这里我们提供了系统二助教 [45gfg9](https://github.com/45gfg9) 编写的 `printk` 来输出格式化字符串。
 
 !!! note "printk 和之前大家用过的 printf 用法一致，遇到什么输出上的 bug 请及时联系助教"
 
