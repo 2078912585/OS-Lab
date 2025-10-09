@@ -1,35 +1,15 @@
-#include "rand.h"
+// from musl (https://elixir.bootlin.com/musl/v1.2.5/source/src/prng/rand.c)
 
-int initialize = 0;
-int r[1000];
-int t = 0;
+#include "stdint.h"
+#include "stdlib.h"
 
-uint64 rand() {
-    int i;
+static uint64_t seed;
 
-    if (initialize == 0) {
-        r[0] = SEED;
-        for (i = 1; i < 31; i++) {
-            r[i] = (16807LL * r[i - 1]) % 2147483647;
-            if (r[i] < 0) {
-                r[i] += 2147483647;
-            }
-        }
-        for (i = 31; i < 34; i++) {
-            r[i] = r[i - 31];
-        }
-        for (i = 34; i < 344; i++) {
-            r[i] = r[i - 31] + r[i - 3];
-        }
+void srand(unsigned s) {
+    seed = s - 1;
+}
 
-		initialize = 1;
-    }
-
-	t = t % 656;
-
-    r[t + 344] = r[t + 344 - 31] + r[t + 344 - 3];
-    
-	t++;
-
-    return (uint64)r[t - 1 + 344] % 10 + 1;
+int rand(void) {
+    seed = 6364136223846793005ULL * seed + 1;
+    return seed >> 33;
 }

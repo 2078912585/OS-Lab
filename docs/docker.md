@@ -1,4 +1,4 @@
-# 使用Docker运行实验(beta)
+# 使用Docker和ssh运行实验(beta)
 
 ## Docker简介
 
@@ -35,3 +35,20 @@
     ```bash
     docker compose down
     ```
+
+
+
+## ssh简介
+
+简而言之，ssh是一种网络协议及其相关实现，可在网络中为网络服务提供安全的传输环境。最常见的用途是远程登录系统，利用ssh来传输命令行界面和远程执行命令。
+
+以Ubuntu和VSCode为例，在Ubuntu中使用`apt`安装`openssh-server`
+
+
+    ```bash
+    sudo apt install openssh-server -y
+    ```
+
+安装完成后使用`ip a`查看开放给客户端的网络接口ip
+
+VSCode中，安装SSH扩展，点击窗口左下角的远程连接，选择`connect to Host`选项，使用上面得到的ip以及相关的

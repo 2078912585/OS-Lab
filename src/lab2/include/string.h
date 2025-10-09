@@ -1,5 +1,8 @@
-#pragma once
+#ifndef __STRING_H__
+#define __STRING_H__
 
-#include "types.h"
+#include "stdint.h"
 
-void* memset(void *, int, uint64);
+void *memset(void *, int, uint64_t);
+
+#endif

@@ -1,4 +1,7 @@
-#include "types.h"
+#ifndef __MM_H__
+#define __MM_H__
+
+#include "stdint.h"
 
 struct run {
     struct run *next;
@@ -6,5 +9,7 @@ struct run {
 
 void mm_init();
 
-uint64 kalloc();
-void kfree(uint64);
+void *kalloc();
+void kfree(void *);
+
+#endif
