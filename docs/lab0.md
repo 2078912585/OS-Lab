@@ -1,5 +1,10 @@
 # Lab 0: GDB & QEMU 调试 64 位 RISC-V LINUX
 
+!!! tip "DDL"
+
+    寿黎但班DDL: 2025.10.12 23:59
+
+    
 ## 实验目的
 
 - 使用交叉编译工具, 完成Linux内核代码编译
