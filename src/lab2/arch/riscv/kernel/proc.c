@@ -10,16 +10,23 @@ struct task_struct *idle;           // idle process
 struct task_struct *current;        // 指向当前运行线程的 task_struct
 struct task_struct *task[NR_TASKS]; // 线程数组，所有的线程都保存在此
 
+extern void __dummy();
+
 void task_init() {
     srand(2024);
 
     // 1. 调用 kalloc() 为 idle 分配一个物理页
+    idle=(struct task_struct *)kalloc();
     // 2. 设置 state 为 TASK_RUNNING;
+    idle->state = TASK_RUNNING;
     // 3. 由于 idle 不参与调度，可以将其 counter / priority 设置为 0
+    idle->counter = 0;
+    idle->priority = 0;
     // 4. 设置 idle 的 pid 为 0
+    idle->pid = 0;
     // 5. 将 current 和 task[0] 指向 idle
-
-    /* YOUR CODE HERE */
+    current = idle;
+    task[0] = idle;
 
     // 1. 参考 idle 的设置，为 task[1] ~ task[NR_TASKS - 1] 进行初始化
     // 2. 其中每个线程的 state 为 TASK_RUNNING, 此外，counter 和 priority 进行如下赋值：
@@ -29,7 +36,16 @@ void task_init() {
     //     - ra 设置为 __dummy（见 4.2.2）的地址
     //     - sp 设置为该线程申请的物理页的高地址
 
-    /* YOUR CODE HERE */
+    for(int i=1;i<NR_TASKS;i++){
+        task[i]=(struct task_struct *)kalloc();
+        task[i]->state=TASK_RUNNING;
+        task[i]->counter=0;
+        task[i]->priority=rand()%(PRIORITY_MAX-PRIORITY_MIN+1)+PRIORITY_MIN;
+        task[i]->pid=i;
+        task[i]->thread.ra=(uint64_t)&__dummy;
+        task[i]->thread.sp=(uint64_t)task[i]+PGSIZE;
+       
+    }
 
     printk("...task_init done!\n");
 }
@@ -72,4 +88,57 @@ void dummy() {
             #endif
         }
     }
+}
+
+extern void __switch_to(struct task_struct *prev,struct task_struct *next);
+
+void switch_to(struct task_struct *next){
+    if(current==next){
+        return;
+    }
+    struct task_struct *prev=current;
+    current=next;
+    printk(RED "switch to [PID = %d PRIORITY =  %d COUNTER = %d]\n" CLEAR,next->pid,next->priority,next->counter);
+    __switch_to(prev,next);
+    
+}
+
+void do_timer(){
+    // 1. 如果当前线程是 idle 线程或当前线程时间片耗尽则直接进行调度
+    if(current==idle||current->counter==0){
+        schedule();
+    }
+     // 2. 否则对当前线程的运行剩余时间减 1，若剩余时间仍然大于 0 则直接返回，否则进行调度
+    else{
+        current->counter--;
+        if(current->counter==0){
+            schedule();
+        }
+    }
+}
+
+void schedule(){
+    struct task_struct *next=NULL;
+    uint64_t max_counter=0;
+    //找到 counter 最大的线程
+    for(int i=0;i<NR_TASKS;i++){
+        if(task[i]->counter>max_counter){
+            max_counter=task[i]->counter;
+            next=task[i];
+        }
+    }
+    //如果所有线程的 counter 都为 0，则重新为每个线程分配时间片，分配策略为将线程的 priority 赋值给 counter
+    if(max_counter==0){
+        for(int i=1;i<NR_TASKS;i++){
+            task[i]->counter=task[i]->priority;
+             printk(BLUE "SET [PID = %d PRIORITY = %d COUNTER = %d]\n" CLEAR,task[i]->pid,task[i]->priority,task[i]->counter);
+            if(task[i]->counter>max_counter){
+                max_counter=task[i]->counter;
+                next=task[i];
+                
+            }
+        }
+    }
+
+    if(next!=NULL) switch_to(next);
 }

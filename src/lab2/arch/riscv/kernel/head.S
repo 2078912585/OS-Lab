@@ -1,10 +1,15 @@
     .extern start_kernel
     .extern sbi_set_timer
     .extern get_cycles
+    .extern mm_init
+    .extern task_init
     .section .text.init
     .globl _start
 _start:
     la sp,boot_stack_top # 设置栈指针指向栈顶
+
+    call mm_init #初始化内存管理系统
+    call task_init #初始化线程数据结构
     
     # set stvec = _traps
     la t0,_traps
