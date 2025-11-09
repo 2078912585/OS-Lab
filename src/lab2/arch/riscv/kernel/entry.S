@@ -115,9 +115,8 @@ __switch_to:
     sd s11,136(a0)
 
     #next是否为第一次调度
-    ld t0,8(a1)
-    ld t1,16(a1)
-    beq t0,t1,first_schedule
+    ld t0,144(a1)
+    beqz t0,first_schedule
     #恢复下一个进程上下文
 
     ld ra,32(a1)

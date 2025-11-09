@@ -24,6 +24,7 @@ void task_init() {
     idle->priority = 0;
     // 4. 设置 idle 的 pid 为 0
     idle->pid = 0;
+    idle->thread.first_schedule=0;
     // 5. 将 current 和 task[0] 指向 idle
     current = idle;
     task[0] = idle;
@@ -44,7 +45,7 @@ void task_init() {
         task[i]->pid=i;
         task[i]->thread.ra=(uint64_t)&__dummy;
         task[i]->thread.sp=(uint64_t)task[i]+PGSIZE;
-       
+        task[i]->thread.first_schedule=1;
     }
 
     printk("...task_init done!\n");

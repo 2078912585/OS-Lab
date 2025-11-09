@@ -19,6 +19,7 @@ struct thread_struct {
     uint64_t ra;
     uint64_t sp;
     uint64_t s[12];
+    uint64_t first_schedule;  // 是否第一次调度
 };
 
 /* 线程数据结构 */
