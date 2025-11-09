@@ -1,0 +1,161 @@
+
+hello:     file format elf64-littleriscv
+
+
+Disassembly of section .plt:
+
+0000000000000520 <.plt>:
+ 520:	00002397          	auipc	t2,0x2
+ 524:	41c30333          	sub	t1,t1,t3
+ 528:	ae83be03          	ld	t3,-1304(t2) # 2008 <__TMC_END__>
+ 52c:	fd430313          	addi	t1,t1,-44
+ 530:	ae838293          	addi	t0,t2,-1304
+ 534:	00135313          	srli	t1,t1,0x1
+ 538:	0082b283          	ld	t0,8(t0)
+ 53c:	000e0067          	jr	t3
+
+0000000000000540 <__libc_start_main@plt>:
+ 540:	00002e17          	auipc	t3,0x2
+ 544:	ad8e3e03          	ld	t3,-1320(t3) # 2018 <__libc_start_main@GLIBC_2.27>
+ 548:	000e0367          	jalr	t1,t3
+ 54c:	00000013          	nop
+
+0000000000000550 <puts@plt>:
+ 550:	00002e17          	auipc	t3,0x2
+ 554:	ad0e3e03          	ld	t3,-1328(t3) # 2020 <puts@GLIBC_2.27>
+ 558:	000e0367          	jalr	t1,t3
+ 55c:	00000013          	nop
+
+Disassembly of section .text:
+
+0000000000000560 <_start>:
+ 560:	02e000ef          	jal	ra,58e <load_gp>
+ 564:	87aa                	mv	a5,a0
+ 566:	00002517          	auipc	a0,0x2
+ 56a:	ad253503          	ld	a0,-1326(a0) # 2038 <_GLOBAL_OFFSET_TABLE_+0x10>
+ 56e:	6582                	ld	a1,0(sp)
+ 570:	0030                	addi	a2,sp,8
+ 572:	ff017113          	andi	sp,sp,-16
+ 576:	00000697          	auipc	a3,0x0
+ 57a:	0d468693          	addi	a3,a3,212 # 64a <__libc_csu_init>
+ 57e:	00000717          	auipc	a4,0x0
+ 582:	12470713          	addi	a4,a4,292 # 6a2 <__libc_csu_fini>
+ 586:	880a                	mv	a6,sp
+ 588:	fb9ff0ef          	jal	ra,540 <__libc_start_main@plt>
+ 58c:	9002                	ebreak
+
+000000000000058e <load_gp>:
+ 58e:	00002197          	auipc	gp,0x2
+ 592:	27218193          	addi	gp,gp,626 # 2800 <__global_pointer$>
+ 596:	8082                	ret
+	...
+
+000000000000059a <deregister_tm_clones>:
+ 59a:	00002517          	auipc	a0,0x2
+ 59e:	a6e50513          	addi	a0,a0,-1426 # 2008 <__TMC_END__>
+ 5a2:	00002797          	auipc	a5,0x2
+ 5a6:	a6678793          	addi	a5,a5,-1434 # 2008 <__TMC_END__>
+ 5aa:	00a78963          	beq	a5,a0,5bc <deregister_tm_clones+0x22>
+ 5ae:	00002317          	auipc	t1,0x2
+ 5b2:	a8233303          	ld	t1,-1406(t1) # 2030 <_ITM_deregisterTMCloneTable>
+ 5b6:	00030363          	beqz	t1,5bc <deregister_tm_clones+0x22>
+ 5ba:	8302                	jr	t1
+ 5bc:	8082                	ret
+
+00000000000005be <register_tm_clones>:
+ 5be:	00002517          	auipc	a0,0x2
+ 5c2:	a4a50513          	addi	a0,a0,-1462 # 2008 <__TMC_END__>
+ 5c6:	00002797          	auipc	a5,0x2
+ 5ca:	a4278793          	addi	a5,a5,-1470 # 2008 <__TMC_END__>
+ 5ce:	8f89                	sub	a5,a5,a0
+ 5d0:	4037d713          	srai	a4,a5,0x3
+ 5d4:	03f7d593          	srli	a1,a5,0x3f
+ 5d8:	95ba                	add	a1,a1,a4
+ 5da:	8585                	srai	a1,a1,0x1
+ 5dc:	c981                	beqz	a1,5ec <register_tm_clones+0x2e>
+ 5de:	00002317          	auipc	t1,0x2
+ 5e2:	a6a33303          	ld	t1,-1430(t1) # 2048 <_ITM_registerTMCloneTable>
+ 5e6:	00030363          	beqz	t1,5ec <register_tm_clones+0x2e>
+ 5ea:	8302                	jr	t1
+ 5ec:	8082                	ret
+
+00000000000005ee <__do_global_dtors_aux>:
+ 5ee:	1141                	addi	sp,sp,-16
+ 5f0:	e022                	sd	s0,0(sp)
+ 5f2:	00002417          	auipc	s0,0x2
+ 5f6:	a6240413          	addi	s0,s0,-1438 # 2054 <completed.6761>
+ 5fa:	00044783          	lbu	a5,0(s0)
+ 5fe:	e406                	sd	ra,8(sp)
+ 600:	e385                	bnez	a5,620 <__do_global_dtors_aux+0x32>
+ 602:	00002797          	auipc	a5,0x2
+ 606:	a3e7b783          	ld	a5,-1474(a5) # 2040 <__cxa_finalize@GLIBC_2.27>
+ 60a:	c791                	beqz	a5,616 <__do_global_dtors_aux+0x28>
+ 60c:	00002517          	auipc	a0,0x2
+ 610:	9f453503          	ld	a0,-1548(a0) # 2000 <__dso_handle>
+ 614:	9782                	jalr	a5
+ 616:	f85ff0ef          	jal	ra,59a <deregister_tm_clones>
+ 61a:	4785                	li	a5,1
+ 61c:	00f40023          	sb	a5,0(s0)
+ 620:	60a2                	ld	ra,8(sp)
+ 622:	6402                	ld	s0,0(sp)
+ 624:	0141                	addi	sp,sp,16
+ 626:	8082                	ret
+
+0000000000000628 <frame_dummy>:
+ 628:	bf59                	j	5be <register_tm_clones>
+
+000000000000062a <main>:
+ 62a:	1141                	addi	sp,sp,-16
+ 62c:	e406                	sd	ra,8(sp)
+ 62e:	e022                	sd	s0,0(sp)
+ 630:	0800                	addi	s0,sp,16
+ 632:	00000517          	auipc	a0,0x0
+ 636:	07650513          	addi	a0,a0,118 # 6a8 <__libc_csu_fini+0x6>
+ 63a:	f17ff0ef          	jal	ra,550 <puts@plt>
+ 63e:	4781                	li	a5,0
+ 640:	853e                	mv	a0,a5
+ 642:	60a2                	ld	ra,8(sp)
+ 644:	6402                	ld	s0,0(sp)
+ 646:	0141                	addi	sp,sp,16
+ 648:	8082                	ret
+
+000000000000064a <__libc_csu_init>:
+ 64a:	7139                	addi	sp,sp,-64
+ 64c:	f822                	sd	s0,48(sp)
+ 64e:	f04a                	sd	s2,32(sp)
+ 650:	00001417          	auipc	s0,0x1
+ 654:	7b040413          	addi	s0,s0,1968 # 1e00 <__frame_dummy_init_array_entry>
+ 658:	00001917          	auipc	s2,0x1
+ 65c:	7b090913          	addi	s2,s2,1968 # 1e08 <__do_global_dtors_aux_fini_array_entry>
+ 660:	40890933          	sub	s2,s2,s0
+ 664:	fc06                	sd	ra,56(sp)
+ 666:	f426                	sd	s1,40(sp)
+ 668:	ec4e                	sd	s3,24(sp)
+ 66a:	e852                	sd	s4,16(sp)
+ 66c:	e456                	sd	s5,8(sp)
+ 66e:	40395913          	srai	s2,s2,0x3
+ 672:	00090f63          	beqz	s2,690 <__libc_csu_init+0x46>
+ 676:	89aa                	mv	s3,a0
+ 678:	8a2e                	mv	s4,a1
+ 67a:	8ab2                	mv	s5,a2
+ 67c:	4481                	li	s1,0
+ 67e:	601c                	ld	a5,0(s0)
+ 680:	8656                	mv	a2,s5
+ 682:	85d2                	mv	a1,s4
+ 684:	854e                	mv	a0,s3
+ 686:	0485                	addi	s1,s1,1
+ 688:	9782                	jalr	a5
+ 68a:	0421                	addi	s0,s0,8
+ 68c:	fe9919e3          	bne	s2,s1,67e <__libc_csu_init+0x34>
+ 690:	70e2                	ld	ra,56(sp)
+ 692:	7442                	ld	s0,48(sp)
+ 694:	74a2                	ld	s1,40(sp)
+ 696:	7902                	ld	s2,32(sp)
+ 698:	69e2                	ld	s3,24(sp)
+ 69a:	6a42                	ld	s4,16(sp)
+ 69c:	6aa2                	ld	s5,8(sp)
+ 69e:	6121                	addi	sp,sp,64
+ 6a0:	8082                	ret
+
+00000000000006a2 <__libc_csu_fini>:
+ 6a2:	8082                	ret
