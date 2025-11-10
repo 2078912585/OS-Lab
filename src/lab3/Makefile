@@ -9,7 +9,7 @@ ISA		:=	rv64imafd
 ABI		:=	lp64
 
 INCLUDE	:=	-I $(shell pwd)/include -I $(shell pwd)/arch/riscv/include
-CF		:=	-march=$(ISA) -mabi=$(ABI) -mcmodel=medany -fno-builtin -ffunction-sections -fdata-sections -nostartfiles -nostdlib -nostdinc -static -lgcc -Wl,--nmagic -Wl,--gc-sections -g 
+CF		:=	-fno-pie -march=$(ISA) -mabi=$(ABI) -mcmodel=medany -fno-builtin -ffunction-sections -fdata-sections -nostartfiles -nostdlib -nostdinc -static -lgcc -Wl,--nmagic -Wl,--gc-sections -g 
 CFLAG	:=	$(CF) $(INCLUDE)
 
 TEST_SCHED :=0
