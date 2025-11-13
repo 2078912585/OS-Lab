@@ -40,6 +40,7 @@ _start:
 
     .globl relocate
 relocate:
+    # PA2VA_OFFSET=0xffffffdf80000000
     li t0,0x80000000
     li t1,0xffffffdf
     slli t1,t1,32
@@ -48,17 +49,32 @@ relocate:
     add ra,ra,t0     # set ra = ra + PA2VA_OFFSET
     add sp,sp,t0     # set sp = sp + PA2VA_OFFSET 
 
-    sfence.vma zero,zero        # need a fence to ensure the new translations are in use
+    # need a fence to ensure the new translations are in use
+    sfence.vma zero,zero      
 
     # set satp
     la t0,early_pgtbl
     srli t0,t0,12
-    li t1,(8<<60)               # MODE=8 Sv39
+    li t1,(8<<60)    # MODE=8 Sv39
     or t0,t0,t1
     csrw satp,t0
     
     sfence.vma zero, zero
     ret
+
+    .globl set_trap
+set_trap:
+     # PA2VA_OFFSET=0xffffffdf80000000
+    li t2,0x80000000
+    li t3,0xffffffdf
+    slli t3,t3,32
+    or t2,t2,t3
+
+    csrr t3,sepc
+    add t3,t3,t2
+    csrw sepc,t3
+
+    sret
 
     .section .bss.stack
     .globl boot_stack

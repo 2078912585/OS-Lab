@@ -45,6 +45,10 @@ void setup_vm() {
 
 }
 
+void setup_vm_neq(){
+
+}
+
 /* 创建多级页表映射关系 */
 /* 不要修改该接口的参数和返回值 */
 void create_mapping(uint64_t *pgtbl, uint64_t va, uint64_t pa, uint64_t sz, uint64_t perm) {
@@ -68,8 +72,10 @@ void create_mapping(uint64_t *pgtbl, uint64_t va, uint64_t pa, uint64_t sz, uint
 
         
         if(!(pgtbl[vpn2]&PTE_V)){
+            //分配新的二级页表
             uint64_t *patbl2=(uint64_t *)kalloc();
             memset(patbl2,0,PGSIZE);
+            //转化物理地址
             uint64_t patbl2_pa=(uint64_t)patbl2-PA2VA_OFFSET;
             pgtbl[vpn2]=((uint64_t)patbl2_pa>>12)<<10|PTE_V;
         }
@@ -115,7 +121,7 @@ void setup_vm_final() {
     // mapping other memory -|W|R|V
     create_mapping(swapper_pg_dir,(uint64_t)_sdata,(uint64_t)(_sdata-PA2VA_OFFSET),
                    (uint64_t)(PHY_END-((uint64_t)_sdata-PA2VA_OFFSET)),PTE_W|PTE_R|PTE_V);
-    printk("setup_vm_final: mapping kernel data/bss/heap/stack done!\n");
+    printk("setup_vm_final: mapping other memory done!\n");
 
     // set satp with swapper_pg_dir
     uint64_t satp_val=0;
