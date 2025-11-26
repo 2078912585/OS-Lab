@@ -2,8 +2,9 @@
 #include "printk.h"
 #include "clock.h"
 #include "proc.h"
+#include "syscall.h"
 
-void trap_handler(uint64_t scause, uint64_t sepc) {
+void trap_handler(uint64_t scause, uint64_t sepc,struct pt_regs *regs) {
     // 通过 `scause` 判断 trap 类型,最高位为1
     if(scause & (1ULL << 63)) {
         uint64_t interrupt_code = scause & ~(1UL << 63);
@@ -19,6 +20,25 @@ void trap_handler(uint64_t scause, uint64_t sepc) {
         }
     } else {
         uint64_t exception_code = scause;
+        //用户态系统调用
+        if(exception_code==8){
+            uint64_t a7=regs->x[17]; //系统调用号
+            uint64_t a0=regs->x[10]; //参数1
+            uint64_t a1=regs->x[11]; //参数2
+            uint64_t a2=regs->x[12]; //参数3
+            uint64_t ret=-1;
+            if(a7==SYS_write){
+                ret=sys_write((unsigned int)a0,(const char *)a1,(size_t)a2);
+            }else if(a7==SYS_getpid){
+                ret=sys_getpid();
+            }else{
+                printk("unknown syscall %d\n",a7);
+            }
+            regs->x[10]=ret; //将返回值写入 a0
+            regs->sepc+=4; //指令地址后移
+            return;
+        }
+
         printk("exception: %d\n", exception_code);
     }   
 }

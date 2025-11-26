@@ -34,6 +34,10 @@ struct task_struct {
     uint64_t *pgd;      // 用户态页表
 };
 
+struct task_struct *idle;           // idle process
+struct task_struct *current;        // 指向当前运行线程的 task_struct
+struct task_struct *task[NR_TASKS]; // 线程数组，所有的线程都保存在此
+
 /* 线程初始化，创建 NR_TASKS 个线程 */
 void task_init();
 

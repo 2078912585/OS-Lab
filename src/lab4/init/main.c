@@ -1,5 +1,6 @@
 #include "printk.h"
 #include "defs.h"
+#include "proc.h"
 
 extern void test();
 
@@ -34,6 +35,7 @@ void test_exe(){
 int start_kernel() {
     printk("2024");
     printk(" ZJU Operating System\n");
+    schedule();
     // printk("The original value of ssratch: 0x%lx\n", csr_read(sscratch));
     // csr_write(sscratch, 0xdeadbeef);
     // printk("After  csr_write(sscratch, 0xdeadbeef): 0x%lx\n", csr_read(sscratch));

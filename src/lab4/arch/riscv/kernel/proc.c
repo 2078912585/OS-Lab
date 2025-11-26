@@ -6,12 +6,6 @@
 
 extern void __dummy();
 
-struct task_struct *idle;           // idle process
-struct task_struct *current;        // 指向当前运行线程的 task_struct
-struct task_struct *task[NR_TASKS]; // 线程数组，所有的线程都保存在此
-
-extern void __dummy();
-
 uint64_t swapper_pg_dir[512] __attribute__((__aligned__(0x1000)));
 extern void create_mapping(uint64_t *pgtbl, uint64_t va, uint64_t pa, uint64_t sz, uint64_t perm);
 
@@ -66,6 +60,7 @@ void task_init() {
 
     for(int i=1;i<NR_TASKS;i++){
         task[i]=(struct task_struct *)kalloc();
+        memset(task[i],0,sizeof(struct task_struct));
         task[i]->state=TASK_RUNNING;
         task[i]->counter=0;
         task[i]->priority=rand()%(PRIORITY_MAX-PRIORITY_MIN+1)+PRIORITY_MIN;
@@ -74,12 +69,13 @@ void task_init() {
         task[i]->thread.sp=(uint64_t)task[i]+PGSIZE;
         task[i]->thread.first_schedule=1;
         task[i]->thread.sepc=(uint64_t)USER_START;   //将 sepc 设置为 USER_START
+        task[i]->thread.sstatus=0;
         task[i]->thread.sstatus&=~(1UL<<8);         //将 SPP 位置 0，使得 sret 返回至 U-Mode
-        task[i]->thread.sstatus&=~(1UL<<18);        //将 SUM 位置 1， S-Mode 可以访问 User 页表
+        task[i]->thread.sstatus|=(1UL<<18);        //将 SUM 位置 1， S-Mode 可以访问 User 页表
         task[i]->thread.sscratch = (uint64_t)USER_END;//将 sscratch 设置为 U-Mode 的 sp
 
         // 创建属于它自己的页表：
-        task[i]->pgd=(uint64_t *)kalloc;
+        task[i]->pgd=(uint64_t *)kalloc();
         //将内核页表 swapper_pg_dir 复制到进程的页表中
         memcpy(task[i]->pgd,swapper_pg_dir,PGSIZE);
         void *uapp_mem=alloc_pages(num_pages);  //分配内存

@@ -3,7 +3,14 @@
     .align 2
     .globl _traps
 _traps:
-    addi sp,sp,-33*8   # 开辟栈空间
+    # 判断是否来自用户态
+    csrr t0,sscratch
+    beqz t0,no_swap_first
+    csrw sscratch,sp
+    mv sp,t0
+
+no_swap_first:
+    addi sp,sp,-34*8   # 开辟栈空间
     # save 32 registers and sepc to stack
     sd x0,0*8(sp)
     sd x1,1*8(sp)
@@ -39,10 +46,13 @@ _traps:
     sd x31,31*8(sp)
     csrr t0,sepc
     sd t0,32*8(sp)
+    csrr t0,sstatus
+    sd t0,33*8(sp)
 
     # call trap_handler
     csrr a0,scause
     csrr a1,sepc
+    mv a2,sp
     call trap_handler
 
     # restore sepc and 32 register from stack
@@ -81,14 +91,26 @@ _traps:
     ld x1,1*8(sp)
     ld x0,0*8(sp)
     ld x2,2*8(sp)
-    addi sp,sp,33*8   # 释放栈空间
+    addi sp,sp,34*8   # 释放栈空间
 
+    # 如果为用户态（再次交换）
+    csrr t0,sscratch
+    beqz t0,no_swap_last
+    csrw sscratch,sp
+    mv sp,t0
+
+no_swap_last:
     # return from trap
     sret
 
     .extern dummy
     .globl __dummy
 __dummy:
+    # 交换寄存器值
+    csrr t0,sscratch
+    csrw sscratch,sp
+    mv sp,t0
+
     la t0,dummy
     csrw sepc,t0
     sret
@@ -136,11 +158,11 @@ __switch_to:
     sfence.vma zero, zero
 
     # 恢复下一个进程 sepc,sstatus,sscratch
-    ld t0,152(a0)
+    ld t0,152(a1)
     csrw sepc,t0
-    ld t0,160(a0)
+    ld t0,160(a1)
     csrw sstatus,t0
-    ld t0,168(a0)
+    ld t0,168(a1)
     csrw sscratch,t0
 
 

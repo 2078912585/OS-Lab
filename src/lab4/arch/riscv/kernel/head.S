@@ -33,8 +33,8 @@ _start:
     call sbi_set_timer
 
     # set sstatus[SIE]=1
-    li t0,(1<<1)
-    csrs sstatus,t0
+    #li t0,(1<<1)
+    #csrs sstatus,t0
     
     j start_kernel       # 跳转到 main.c 中的 start_kernel
 
