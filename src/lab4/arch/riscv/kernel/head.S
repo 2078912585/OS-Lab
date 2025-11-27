@@ -15,8 +15,8 @@ _start:
     call setup_vm  #映射
     call relocate
     call mm_init #初始化内存管理系统
-    call task_init #初始化线程数据结构 
     call setup_vm_final
+    call task_init #初始化线程数据结构 
     
     # set stvec = _traps
     la t0,_traps

@@ -15,21 +15,13 @@ CFLAG	:=	$(CF) $(INCLUDE)
 TEST_SCHED :=0
 CFLAG      :=$(CF) $(INCLUDE) -DTEST_SCHED=$(TEST_SCHED)
 
-SUBDIRS := lib init user arch/riscv 
-
-.PHONY:all run debug clean ${SUBDIRS}
-
-all: $(SUBDIRS)
+.PHONY:all run debug clean
+all: clean
+	$(MAKE) -C lib all
+	$(MAKE) -C init all 
+	$(MAKE) -C user all
+	$(MAKE) -C arch/riscv all
 	@echo -e '\n'Build Finished OK
-
-$(SUBDIRS):
-	$(MAKE) -C $@ all
-
-user: 
-	$(MAKE) -C $@ all CC=$(CC) CFLAG="$(CFLAG)" LD=$(LD) OBJCOPY=$(OBJCOPY) ISA=$(ISA) ABI=$(ABI)
-
-lib init arch/riscv:
-	$(MAKE) -C $@ all
 
 run: all
 	@echo Launch qemu...
@@ -42,8 +34,8 @@ debug: all
 clean:
 	$(MAKE) -C lib clean
 	$(MAKE) -C init clean
-	$(MAKE) -C arch/riscv clean
 	$(MAKE) -C user clean
+	$(MAKE) -C arch/riscv clean
 	$(shell test -f vmlinux && rm vmlinux)
 	$(shell test -f vmlinux.asm && rm vmlinux.asm)
 	$(shell test -f System.map && rm System.map)

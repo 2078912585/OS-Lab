@@ -106,13 +106,13 @@ no_swap_last:
     .extern dummy
     .globl __dummy
 __dummy:
-    # 交换寄存器值
+    #r 交换寄存器值
     csrr t0,sscratch
     csrw sscratch,sp
     mv sp,t0
 
-    la t0,dummy
-    csrw sepc,t0
+    #la t0,dummy
+    #csrw sepc,t0
     sret
 
     .globl __switch_to
@@ -168,7 +168,7 @@ __switch_to:
 
     #next是否为第一次调度
     ld t0,144(a1)
-    beqz t0,first_schedule
+    bnez t0,first_schedule
 
     #恢复下一个进程上下文
     ld ra,32(a1)
@@ -190,6 +190,7 @@ __switch_to:
     j switch_done
 
 first_schedule:
+    sd zero, 144(a1)  
     ld ra,32(a1)
     ld sp,40(a1)
     j switch_done
