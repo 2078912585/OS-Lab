@@ -3,6 +3,7 @@
 #include "proc.h"
 #include "stdlib.h"
 #include "printk.h"
+#include "elf.h"
 
 extern void __dummy();
 
@@ -28,6 +29,33 @@ void memcpy(void *dest,void *src, size_t n) {
     for (size_t i = 0; i < n; i++) {
         d[i] = s[i];
     }
+}
+
+void load_program(struct task_struct *task){
+    Elf64_Ehdr *ehdr=(Elf64_Ehdr *)_sramdisk;
+    Elf64_Phdr *phdrs=(Elf64_Phdr *)(_sramdisk+ehdr->e_phoff);
+    //偏移
+    uint64_t offset=ehdr->e_entry-(ehdr->e_entry & ~(PGSIZE - 1));
+    for(int i=0;i<ehdr->e_phnum;i++){
+        Elf64_Phdr *phdr=phdrs+i;
+        if(phdr->p_type==PT_LOAD){//只关注 type 为 LOAD 的 segment
+             //分配内存
+            size_t num_pages=(phdr->p_memsz+PGSIZE-1)/PGSIZE;
+            void *pa_mem=alloc_pages(num_pages); 
+            //复制
+            memcpy(pa_mem+offset,_sramdisk+phdr->p_offset,phdr->p_filesz);
+            //映射
+            uint64_t perm=PTE_V|PTE_U;//权限
+            if(phdr->p_flags&PF_R) perm|=PTE_R;
+            if(phdr->p_flags&PF_W) perm|=PTE_W;
+            if(phdr->p_flags&PF_X) perm|=PTE_X;
+
+            
+            create_mapping(task->pgd,phdr->p_vaddr,VA2PA((uint64_t)pa_mem),num_pages*PGSIZE,perm);
+            
+        }
+    }
+    task->thread.sepc=ehdr->e_entry;
 }
 
 void task_init() {
@@ -68,22 +96,28 @@ void task_init() {
         task[i]->thread.ra=(uint64_t)&__dummy;
         task[i]->thread.sp=(uint64_t)task[i]+PGSIZE;
         task[i]->thread.first_schedule=1;
-        task[i]->thread.sepc=(uint64_t)USER_START;   //将 sepc 设置为 USER_START
+        // task[i]->thread.sepc=(uint64_t)USER_START;   //将 sepc 设置为 USER_START
         task[i]->thread.sstatus=0;
         task[i]->thread.sstatus&=~(1UL<<8);         //将 SPP 位置 0，使得 sret 返回至 U-Mode
+        task[i]->thread.sstatus|=(1UL<<5);         //将 SPIE 位置 1
         task[i]->thread.sstatus|=(1UL<<18);        //将 SUM 位置 1， S-Mode 可以访问 User 页表
         task[i]->thread.sscratch = (uint64_t)USER_END;//将 sscratch 设置为 U-Mode 的 sp
 
-        // 创建属于它自己的页表：
+        // 创建属于自己的页表：
         task[i]->pgd=(uint64_t *)kalloc();
         //将内核页表 swapper_pg_dir 复制到进程的页表中
-        memcpy(task[i]->pgd,swapper_pg_dir,PGSIZE);
-        void *uapp_mem=alloc_pages(num_pages);  //分配内存
-        //将 uapp 复制到分配的内存中
-        memcpy(uapp_mem,_sramdisk,uapp_size);
-        //将 uapp 所在的页面映射到进程的页表中
-        create_mapping(task[i]->pgd,(uint64_t)USER_START,VA2PA((uint64_t)uapp_mem),uapp_size,PTE_V|PTE_R|PTE_W|PTE_X|PTE_U);
+        memcpy(task[i]->pgd, swapper_pg_dir, PGSIZE);
 
+        // void *uapp_mem=alloc_pages(num_pages);  //分配内存
+        //将 uapp 复制到分配的内存中
+        // memcpy(uapp_mem,_sramdisk,uapp_size);
+        // 将 uapp 所在的页面映射到进程的页表中
+        // create_mapping(task[i]->pgd,(uint64_t)USER_START,VA2PA((uint64_t)uapp_mem),num_pages*PGSIZE,PTE_V|PTE_R|PTE_W|PTE_X|PTE_U);
+
+        //加载 ELF
+        load_program(task[i]);
+
+       
         //设置用户态栈
         void *user_stack=kalloc();
         uint64_t stack_va=USER_END-PGSIZE; //用户栈顶虚拟地址
